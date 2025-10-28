@@ -133,9 +133,20 @@ export function generateNavigation(): NavItem[] {
 
     // First pass: collect all files and directories
     for (const file of files) {
+      // Skip hidden files, underscore-prefixed files, and README files
+      if (file.startsWith('.') || file.startsWith('_') || file.toUpperCase() === 'README.MD') {
+        continue;
+      }
+
       const filePath = path.join(dir, file);
       const stat = fs.statSync(filePath);
       const isDirectory = stat.isDirectory();
+
+      // Skip if it's a file but not .md or .mdx
+      if (!isDirectory && !file.endsWith('.md') && !file.endsWith('.mdx')) {
+        continue;
+      }
+
       const name = file.replace(/\.mdx?$/, '');
 
       let title = titleCase(name);
