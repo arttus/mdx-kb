@@ -2,45 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronRight, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import type { NavItem } from '@/lib/mdx';
 
-interface NavItem {
-  title: string;
-  href?: string;
-  items?: NavItem[];
+interface SidebarProps {
+  navigation: NavItem[];
 }
 
-const navigation: NavItem[] = [
-  {
-    title: 'Getting Started',
-    items: [
-      { title: 'Introduction', href: '/docs/introduction' },
-      { title: 'Installation', href: '/docs/installation' },
-      { title: 'Quick Start', href: '/docs/quick-start' },
-    ],
-  },
-  {
-    title: 'Guides',
-    items: [
-      { title: 'Writing MDX', href: '/docs/guides/writing-mdx' },
-      { title: 'Code Blocks', href: '/docs/guides/code-blocks' },
-      { title: 'Diagrams', href: '/docs/guides/diagrams' },
-      { title: 'Components', href: '/docs/guides/components' },
-    ],
-  },
-  {
-    title: 'API Reference',
-    items: [
-      { title: 'Configuration', href: '/docs/api/configuration' },
-      { title: 'Theming', href: '/docs/api/theming' },
-      { title: 'Plugins', href: '/docs/api/plugins' },
-    ],
-  },
-];
-
-export function Sidebar() {
+export function Sidebar({ navigation }: SidebarProps) {
   const pathname = usePathname();
 
   return (

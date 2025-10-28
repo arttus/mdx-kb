@@ -93,3 +93,112 @@ export function generateToc(content: string): TocItem[] {
 
   return toc;
 }
+
+export interface NavItem {
+  title: string;
+  href?: string;
+  items?: NavItem[];
+  order?: number;
+}
+
+interface FileNode {
+  name: string;
+  path: string;
+  isDirectory: boolean;
+  title?: string;
+  order?: number;
+}
+
+function titleCase(str: string): string {
+  return str
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+export function generateNavigation(): NavItem[] {
+  const navigation: NavItem[] = [];
+
+  function buildTree(dir: string, slugPrefix: string[] = []): NavItem[] {
+    if (!fs.existsSync(dir)) {
+      return [];
+    }
+
+    const files = fs.readdirSync(dir);
+    const nodes: FileNode[] = [];
+
+    // First pass: collect all files and directories
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      const stat = fs.statSync(filePath);
+      const isDirectory = stat.isDirectory();
+      const name = file.replace('.mdx', '');
+
+      let title = titleCase(name);
+      let order = 999;
+
+      // If it's an MDX file, read its frontmatter for title and order
+      if (!isDirectory && file.endsWith('.mdx')) {
+        try {
+          const fileContents = fs.readFileSync(filePath, 'utf8');
+          const { data } = matter(fileContents);
+          if (data.title) {
+            title = data.title;
+          }
+          if (typeof data.order === 'number') {
+            order = data.order;
+          }
+        } catch (error) {
+          console.error(`Error reading frontmatter from ${filePath}:`, error);
+        }
+      }
+
+      nodes.push({
+        name,
+        path: filePath,
+        isDirectory,
+        title,
+        order,
+      });
+    }
+
+    // Sort by order, then by name
+    nodes.sort((a, b) => {
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+    const items: NavItem[] = [];
+
+    for (const node of nodes) {
+      if (node.isDirectory) {
+        const subItems = buildTree(node.path, [...slugPrefix, node.name]);
+        if (subItems.length > 0) {
+          items.push({
+            title: node.title,
+            items: subItems,
+            order: node.order,
+          });
+        }
+      } else {
+        // It's an MDX file (already stripped .mdx extension in the name)
+        const href = `/docs/${[...slugPrefix, node.name].join('/')}`;
+        items.push({
+          title: node.title,
+          href,
+          order: node.order,
+        });
+      }
+    }
+
+    return items;
+  }
+
+  const rootItems = buildTree(contentDirectory);
+
+  // Group root-level items into sections if they're in subdirectories
+  // Otherwise, return them as-is
+  return rootItems;
+}
