@@ -4,6 +4,7 @@ import { TableOfContents } from '@/components/layout/table-of-contents';
 import { Separator } from '@/components/ui/separator';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { mdxComponents } from '@/components/mdx/mdx-components';
+import remarkGfm from 'remark-gfm';
 
 interface DocPageProps {
   params: Promise<{
@@ -57,7 +58,16 @@ export default async function DocPage({ params }: DocPageProps) {
           )}
           <Separator className="mt-4" />
         </div>
-        <MDXRemote source={doc.content} components={mdxComponents} />
+        <MDXRemote
+          source={doc.content}
+          components={mdxComponents}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+              rehypePlugins: [],
+            },
+          }}
+        />
       </article>
       <TableOfContents items={toc} />
     </div>
