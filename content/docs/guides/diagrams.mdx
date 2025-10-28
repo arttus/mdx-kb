@@ -1,0 +1,167 @@
+---
+title: "Diagrams"
+description: "Create beautiful diagrams with Mermaid"
+date: "2024-01-15"
+category: "guides"
+---
+
+# Diagrams
+
+Create stunning diagrams directly in your documentation using Mermaid syntax.
+
+## Flowcharts
+
+Create flowcharts to visualize processes:
+
+```mermaid
+graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+    C --> E[End]
+    D --> E
+```
+
+## Sequence Diagrams
+
+Show interactions between components:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App
+    participant API
+    participant DB
+
+    User->>App: Request Data
+    App->>API: Fetch Data
+    API->>DB: Query
+    DB-->>API: Results
+    API-->>App: Response
+    App-->>User: Display Data
+```
+
+## Class Diagrams
+
+Document your code structure:
+
+```mermaid
+classDiagram
+    class User {
+        +String name
+        +String email
+        +login()
+        +logout()
+    }
+    
+    class Admin {
+        +String role
+        +manageUsers()
+    }
+    
+    User <|-- Admin
+```
+
+## State Diagrams
+
+Visualize state machines:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Loading: Start
+    Loading --> Success: Data Loaded
+    Loading --> Error: Failed
+    Success --> Idle: Reset
+    Error --> Idle: Retry
+    Success --> [*]
+    Error --> [*]
+```
+
+## Gantt Charts
+
+Create project timelines:
+
+```mermaid
+gantt
+    title Project Timeline
+    dateFormat YYYY-MM-DD
+    section Planning
+    Requirements    :2024-01-01, 7d
+    Design         :2024-01-08, 5d
+    section Development
+    Backend        :2024-01-13, 14d
+    Frontend       :2024-01-20, 14d
+    section Testing
+    QA Testing     :2024-02-03, 7d
+    section Deployment
+    Deploy         :2024-02-10, 2d
+```
+
+## Pie Charts
+
+Show data distributions:
+
+```mermaid
+pie title Technology Stack
+    "React" : 35
+    "TypeScript" : 25
+    "Tailwind CSS" : 20
+    "Next.js" : 15
+    "Other" : 5
+```
+
+## Git Graphs
+
+Visualize Git workflows:
+
+```mermaid
+gitGraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit
+    branch feature
+    checkout feature
+    commit
+    checkout develop
+    merge feature
+    checkout main
+    merge develop
+```
+
+<Callout type="info">
+  All diagrams automatically adapt to your theme (light/dark mode).
+</Callout>
+
+## Tips for Great Diagrams
+
+1. **Keep it simple** - Don't overcomplicate diagrams
+2. **Use clear labels** - Make nodes and edges descriptive
+3. **Choose the right type** - Pick the diagram that best fits your needs
+4. **Add context** - Explain what the diagram shows
+5. **Test rendering** - Preview before publishing
+
+## Supported Diagram Types
+
+Mermaid supports many diagram types:
+
+- Flowcharts
+- Sequence diagrams
+- Class diagrams
+- State diagrams
+- Entity relationship diagrams
+- Gantt charts
+- Pie charts
+- Git graphs
+- And more!
+
+## Next Steps
+
+- [Components](/docs/guides/components) - Explore custom components
+- [Configuration](/docs/api/configuration) - Customize diagram themes

@@ -1,0 +1,241 @@
+---
+title: "Plugins"
+description: "Extend your MDX Knowledge Base with plugins"
+date: "2024-01-15"
+category: "api"
+---
+
+# Plugins
+
+Extend the functionality of your MDX Knowledge Base with remark and rehype plugins.
+
+## Remark Plugins
+
+Remark plugins process Markdown before it's converted to HTML.
+
+### GitHub Flavored Markdown
+
+Add support for tables, task lists, and more:
+
+```bash
+npm install remark-gfm
+```
+
+```typescript title="next.config.ts"
+import remarkGfm from 'remark-gfm';
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkGfm],
+  },
+});
+```
+
+### Math Support
+
+Add LaTeX math rendering:
+
+```bash
+npm install remark-math rehype-katex
+```
+
+```typescript title="next.config.ts"
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex],
+  },
+});
+```
+
+Then use it in your MDX:
+
+```markdown
+Inline math: $E = mc^2$
+
+Block math:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+```
+
+## Rehype Plugins
+
+Rehype plugins process HTML after Markdown conversion.
+
+### Auto-linking Headings
+
+Add anchor links to headings:
+
+```bash
+npm install rehype-slug rehype-autolink-headings
+```
+
+```typescript title="next.config.ts"
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+
+const withMDX = createMDX({
+  options: {
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, {
+        behavior: 'wrap',
+      }],
+    ],
+  },
+});
+```
+
+### Syntax Highlighting
+
+Beautiful code blocks with Shiki:
+
+```bash
+npm install rehype-pretty-code shiki
+```
+
+```typescript title="next.config.ts"
+import rehypePrettyCode from 'rehype-pretty-code';
+
+const withMDX = createMDX({
+  options: {
+    rehypePlugins: [
+      [rehypePrettyCode, {
+        theme: {
+          dark: 'github-dark',
+          light: 'github-light',
+        },
+        keepBackground: false,
+      }],
+    ],
+  },
+});
+```
+
+## Popular Plugins
+
+### Reading Time
+
+Calculate reading time for articles:
+
+```bash
+npm install reading-time
+```
+
+```typescript title="src/lib/mdx.ts"
+import readingTime from 'reading-time';
+
+export function getReadingTime(content: string) {
+  return readingTime(content);
+}
+```
+
+### Image Optimization
+
+Optimize images automatically:
+
+```bash
+npm install rehype-img-size
+```
+
+### External Links
+
+Add target="_blank" to external links:
+
+```bash
+npm install rehype-external-links
+```
+
+```typescript
+import rehypeExternalLinks from 'rehype-external-links';
+
+rehypePlugins: [
+  [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
+]
+```
+
+## Custom Plugins
+
+Create your own remark plugin:
+
+```typescript title="src/lib/remark-custom.ts"
+import { visit } from 'unist-util-visit';
+
+export function remarkCustomPlugin() {
+  return (tree: any) => {
+    visit(tree, 'text', (node) => {
+      // Transform text nodes
+      node.value = node.value.replace(/TODO/g, '✅ TODO');
+    });
+  };
+}
+```
+
+Use it in your config:
+
+```typescript
+import { remarkCustomPlugin } from './src/lib/remark-custom';
+
+remarkPlugins: [remarkCustomPlugin],
+```
+
+## Plugin Configuration
+
+### Plugin Order Matters
+
+Plugins are applied in order:
+
+```typescript
+remarkPlugins: [
+  remarkGfm,        // 1. Process GFM syntax
+  remarkMath,       // 2. Process math
+  remarkCustom,     // 3. Custom transformations
+],
+rehypePlugins: [
+  rehypeSlug,       // 1. Add IDs to headings
+  rehypeAutolink,   // 2. Add anchor links
+  rehypePrettyCode, // 3. Syntax highlighting
+],
+```
+
+<Callout type="warning">
+  Some plugins may conflict with each other. Test thoroughly!
+</Callout>
+
+## Performance Tips
+
+1. **Use only needed plugins** - Each plugin adds processing time
+2. **Cache compiled MDX** - Reuse compiled output when possible
+3. **Lazy load heavy plugins** - Load Mermaid only when needed
+4. **Optimize images** - Use Next.js Image component
+5. **Monitor build times** - Track plugin impact
+
+## Recommended Plugin Stack
+
+For a full-featured MDX Knowledge Base:
+
+```typescript
+remarkPlugins: [
+  remarkGfm,        // Tables, task lists
+  remarkMath,       // Math equations
+],
+rehypePlugins: [
+  rehypeSlug,       // Heading IDs
+  rehypeAutolink,   // Anchor links
+  rehypePrettyCode, // Code highlighting
+  rehypeExternalLinks, // External link handling
+],
+```
+
+<Callout type="success">
+  You now know how to extend your MDX Knowledge Base with plugins!
+</Callout>
+
+## Next Steps
+
+- [Configuration](/docs/api/configuration) - Fine-tune your setup
+- [Writing MDX](/docs/guides/writing-mdx) - Use plugin features

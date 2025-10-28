@@ -1,0 +1,170 @@
+---
+title: "Components"
+description: "Explore the custom components available in MDX Knowledge Base"
+date: "2024-01-15"
+category: "guides"
+---
+
+# Components
+
+MDX Knowledge Base provides a rich set of custom components to enhance your documentation.
+
+## Callouts
+
+Use callouts to highlight important information:
+
+<Callout type="info" title="Information">
+  This is an informational callout. Use it for helpful tips and notes.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  This is a warning callout. Use it to alert users about potential issues.
+</Callout>
+
+<Callout type="error" title="Error">
+  This is an error callout. Use it to highlight critical problems.
+</Callout>
+
+<Callout type="success" title="Success">
+  This is a success callout. Use it to confirm successful operations.
+</Callout>
+
+## Tabs
+
+Organize content with tabs:
+
+<Tabs defaultValue="preview">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <Card>
+      <CardHeader>
+        <CardTitle>Example Component</CardTitle>
+        <CardDescription>This is what it looks like</CardDescription>
+      </CardHeader>
+      <CardContent>
+        Beautiful, isn't it?
+      </CardContent>
+    </Card>
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    <Card>
+      <CardHeader>
+        <CardTitle>Example Component</CardTitle>
+        <CardDescription>This is what it looks like</CardDescription>
+      </CardHeader>
+      <CardContent>
+        Beautiful, isn't it?
+      </CardContent>
+    </Card>
+    ```
+  </TabsContent>
+</Tabs>
+
+## Cards
+
+Create beautiful card layouts:
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Feature 1</CardTitle>
+      <CardDescription>Description of feature 1</CardDescription>
+    </CardHeader>
+    <CardContent>
+      Detailed information about this feature.
+    </CardContent>
+  </Card>
+  
+  <Card>
+    <CardHeader>
+      <CardTitle>Feature 2</CardTitle>
+      <CardDescription>Description of feature 2</CardDescription>
+    </CardHeader>
+    <CardContent>
+      Detailed information about this feature.
+    </CardContent>
+  </Card>
+</div>
+
+## File Trees
+
+Show directory structures:
+
+<FileTree>
+  - app/
+    - layout.tsx
+    - page.tsx
+    - docs/
+      - [...slug]/
+        - page.tsx
+  - components/
+    - ui/
+      - button.tsx
+      - card.tsx
+    - mdx/
+      - code-block.tsx
+  - content/
+    - docs/
+      - introduction.mdx
+</FileTree>
+
+## Usage Examples
+
+### Callout Syntax
+
+```mdx
+<Callout type="info" title="Optional Title">
+  Your message here
+</Callout>
+```
+
+### Tabs Syntax
+
+```mdx
+<Tabs defaultValue="tab1">
+  <TabsList>
+    <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+    <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+  </TabsList>
+  <TabsContent value="tab1">
+    Content for tab 1
+  </TabsContent>
+  <TabsContent value="tab2">
+    Content for tab 2
+  </TabsContent>
+</Tabs>
+```
+
+### Card Syntax
+
+```mdx
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Content goes here
+  </CardContent>
+</Card>
+```
+
+## Best Practices
+
+1. **Use callouts sparingly** - Too many can be distracting
+2. **Choose appropriate types** - Match the callout type to the message
+3. **Keep tabs organized** - Don't create too many tabs
+4. **Make cards scannable** - Use clear titles and descriptions
+
+<Callout type="success">
+  You now know how to use all the custom components!
+</Callout>
+
+## Next Steps
+
+- [Configuration](/docs/api/configuration) - Customize your setup
+- [Theming](/docs/api/theming) - Adjust colors and styles

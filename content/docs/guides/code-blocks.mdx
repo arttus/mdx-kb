@@ -1,0 +1,133 @@
+---
+title: "Code Blocks"
+description: "Learn how to create beautiful code blocks with syntax highlighting"
+date: "2024-01-15"
+category: "guides"
+---
+
+# Code Blocks
+
+MDX Knowledge Base provides powerful code block features with syntax highlighting powered by Shiki.
+
+## Basic Code Blocks
+
+Create a code block by wrapping your code in triple backticks:
+
+```javascript
+function hello() {
+  console.log("Hello, World!");
+}
+```
+
+## Language Support
+
+Specify the language for proper syntax highlighting:
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const user: User = {
+  id: 1,
+  name: "John Doe",
+  email: "john@example.com"
+};
+```
+
+```python
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))
+```
+
+```rust
+fn main() {
+    let message = "Hello, World!";
+    println!("{}", message);
+}
+```
+
+## File Names
+
+Add a title to show the filename:
+
+```typescript title="user.ts"
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export function createUser(name: string, email: string): User {
+  return {
+    id: Math.random(),
+    name,
+    email
+  };
+}
+```
+
+## Line Highlighting
+
+Highlight specific lines using `{lineNumbers}`:
+
+```javascript title="app.js" {2,4-6}
+function processData(data) {
+  // This line is highlighted
+  const result = data.map(item => {
+    // These lines are highlighted
+    return item * 2;
+  });
+  
+  return result;
+}
+```
+
+## Inline Code
+
+Use single backticks for `inline code` within text.
+
+## Copy to Clipboard
+
+All code blocks include a copy button that appears on hover. Try it out!
+
+```bash
+npm install @next/mdx
+```
+
+## Supported Languages
+
+MDX Knowledge Base supports over 50 programming languages including:
+
+- JavaScript/TypeScript
+- Python
+- Rust
+- Go
+- Java
+- C/C++
+- Ruby
+- PHP
+- Swift
+- Kotlin
+- And many more!
+
+<Callout type="success">
+  Code blocks automatically adapt to your theme (light/dark mode).
+</Callout>
+
+## Best Practices
+
+1. **Always specify the language** for proper highlighting
+2. **Add file names** when showing file contents
+3. **Highlight important lines** to draw attention
+4. **Keep examples concise** and focused
+5. **Test your code** before documenting it
+
+## Next Steps
+
+- [Diagrams](/docs/guides/diagrams) - Create visual diagrams
+- [Components](/docs/guides/components) - Use custom components

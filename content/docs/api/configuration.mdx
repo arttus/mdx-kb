@@ -1,0 +1,158 @@
+---
+title: "Configuration"
+description: "Learn how to configure your MDX Knowledge Base"
+date: "2024-01-15"
+category: "api"
+---
+
+# Configuration
+
+Customize your MDX Knowledge Base to match your needs.
+
+## Next.js Configuration
+
+Configure MDX support in `next.config.ts`:
+
+```typescript title="next.config.ts"
+import type { NextConfig } from "next";
+import createMDX from '@next/mdx';
+
+const nextConfig: NextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+};
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+});
+
+export default withMDX(nextConfig);
+```
+
+## MDX Options
+
+Add remark and rehype plugins:
+
+```typescript title="next.config.ts"
+import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypePrettyCode, {
+        theme: {
+          dark: 'github-dark',
+          light: 'github-light',
+        },
+      }],
+    ],
+  },
+});
+```
+
+## Content Directory
+
+By default, MDX files are stored in `content/docs/`. You can change this in `src/lib/mdx.ts`:
+
+```typescript title="src/lib/mdx.ts"
+const contentDirectory = path.join(process.cwd(), 'content/docs');
+```
+
+## Frontmatter Schema
+
+Define metadata for each page:
+
+```yaml
+---
+title: "Page Title"
+description: "Page description"
+date: "2024-01-15"
+category: "category-name"
+tags: ["tag1", "tag2"]
+---
+```
+
+## Navigation
+
+Update the sidebar navigation in `src/components/layout/sidebar.tsx`:
+
+```typescript
+const navigation: NavItem[] = [
+  {
+    title: 'Getting Started',
+    items: [
+      { title: 'Introduction', href: '/docs/introduction' },
+      { title: 'Installation', href: '/docs/installation' },
+    ],
+  },
+  // Add more sections...
+];
+```
+
+## Theme Configuration
+
+Customize colors in `src/app/globals.css`:
+
+```css
+@theme {
+  --color-primary: oklch(47.6% 0.113 264.4);
+  --color-secondary: oklch(96.1% 0.004 285.824);
+  /* Add more colors... */
+}
+```
+
+<Callout type="info">
+  Changes to theme variables require a server restart.
+</Callout>
+
+## Environment Variables
+
+Create a `.env.local` file for environment-specific settings:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+NEXT_PUBLIC_GA_ID=your-google-analytics-id
+```
+
+## Build Configuration
+
+Optimize for production:
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  }
+}
+```
+
+## TypeScript Configuration
+
+Ensure proper type checking in `tsconfig.json`:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+<Callout type="success">
+  Your MDX Knowledge Base is now fully configured!
+</Callout>
+
+## Next Steps
+
+- [Theming](/docs/api/theming) - Customize the look and feel
+- [Plugins](/docs/api/plugins) - Extend functionality

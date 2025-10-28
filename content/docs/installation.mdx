@@ -1,0 +1,113 @@
+---
+title: "Installation"
+description: "Learn how to install and set up the MDX Knowledge Base"
+date: "2024-01-15"
+category: "getting-started"
+---
+
+# Installation
+
+Get started with MDX Knowledge Base in just a few minutes.
+
+## Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+- **Node.js** 20.x or later
+- **npm** or **yarn** or **pnpm**
+- A code editor (we recommend VS Code)
+
+## Create a New Project
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="yarn">Yarn</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">
+    ```bash
+    npx create-next-app@latest my-knowledge-base --typescript --app --turbopack
+    cd my-knowledge-base
+    ```
+  </TabsContent>
+  <TabsContent value="yarn">
+    ```bash
+    yarn create next-app my-knowledge-base --typescript --app --turbopack
+    cd my-knowledge-base
+    ```
+  </TabsContent>
+  <TabsContent value="pnpm">
+    ```bash
+    pnpm create next-app my-knowledge-base --typescript --app --turbopack
+    cd my-knowledge-base
+    ```
+  </TabsContent>
+</Tabs>
+
+## Install Dependencies
+
+Install the required packages for MDX, syntax highlighting, and UI components:
+
+```bash
+npm install @next/mdx @mdx-js/loader @mdx-js/react gray-matter
+npm install remark-gfm remark-math rehype-slug rehype-autolink-headings rehype-pretty-code shiki
+npm install mermaid next-themes lucide-react
+npm install class-variance-authority clsx tailwind-merge
+```
+
+## Configure Next.js
+
+Update your `next.config.ts` to support MDX:
+
+```typescript title="next.config.ts"
+import createMDX from '@next/mdx';
+
+const nextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+};
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
+
+export default withMDX(nextConfig);
+```
+
+<Callout type="success">
+  Congratulations! You've successfully installed MDX Knowledge Base.
+</Callout>
+
+## Project Structure
+
+Your project should now have the following structure:
+
+```
+my-knowledge-base/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── docs/
+│       └── [...slug]/
+│           └── page.tsx
+├── components/
+│   ├── ui/
+│   └── mdx/
+├── content/
+│   └── docs/
+│       └── *.mdx
+├── lib/
+└── package.json
+```
+
+## Next Steps
+
+Now that you have MDX Knowledge Base installed, you can:
+
+1. [Quick Start](/docs/quick-start) - Create your first documentation page
+2. [Writing MDX](/docs/guides/writing-mdx) - Learn MDX syntax
+3. [Configuration](/docs/api/configuration) - Customize your setup
