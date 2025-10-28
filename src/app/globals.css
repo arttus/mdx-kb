@@ -214,9 +214,6 @@ body {
 pre {
   overflow-x: auto;
   border-radius: var(--radius-lg);
-  padding: 1rem;
-  background-color: var(--color-code-bg) !important;
-  border: 2px solid var(--color-code-border);
 }
 
 pre [data-line] {
@@ -234,37 +231,43 @@ pre [data-highlighted-chars] {
   padding: 0.125rem 0.25rem;
 }
 
-/* Ensure Shiki code blocks have proper background */
-pre.shiki,
-pre.shiki code {
-  background-color: var(--color-code-bg) !important;
+/* Custom syntax highlighting that overrides Shiki's inline styles */
+/* Light mode keeps github-light colors (already good) */
+
+/* Dark mode - override inline styles with light colors */
+.dark .shiki span[style] {
+  color: oklch(0.85 0.02 281) !important; /* Light gray base */
 }
 
-/* Force white text in dark mode for all code */
-.dark pre code,
-.dark pre.shiki code,
-.dark pre.shiki span,
-.dark pre.shiki .line,
-.dark pre.shiki [style*="color"] {
-  color: oklch(0.95 0.01 281) !important;
+/* Dark mode - specific token colors */
+.dark .shiki span[style*="color:#D73A49"],
+.dark .shiki span[style*="color:#CF222E"] {
+  color: oklch(0.75 0.20 340) !important; /* Keywords - bright purple/pink */
 }
 
-/* Force dark text in light mode for all code */
-pre code,
-pre.shiki code,
-pre.shiki span,
-pre.shiki .line,
-pre.shiki [style*="color"] {
-  color: oklch(0.25 0.03 281) !important;
+.dark .shiki span[style*="color:#032F62"],
+.dark .shiki span[style*="color:#0A3069"] {
+  color: oklch(0.75 0.15 150) !important; /* Strings - bright green */
 }
 
-/* Re-apply white text for dark mode (higher specificity) */
-.dark pre code,
-.dark pre.shiki code,
-.dark pre.shiki span,
-.dark pre.shiki .line,
-.dark pre.shiki [style*="color"] {
-  color: oklch(0.95 0.01 281) !important;
+.dark .shiki span[style*="color:#6F42C1"],
+.dark .shiki span[style*="color:#8250DF"] {
+  color: oklch(0.75 0.18 250) !important; /* Functions - bright blue */
+}
+
+.dark .shiki span[style*="color:#005CC5"],
+.dark .shiki span[style*="color:#0550AE"] {
+  color: oklch(0.75 0.20 340) !important; /* Types/Keywords - bright purple */
+}
+
+.dark .shiki span[style*="color:#E36209"],
+.dark .shiki span[style*="color:#953800"] {
+  color: oklch(0.75 0.15 30) !important; /* Numbers - bright orange */
+}
+
+.dark .shiki span[style*="color:#6A737D"],
+.dark .shiki span[style*="color:#57606A"] {
+  color: oklch(0.60 0.05 281) !important; /* Comments - medium gray */
 }
 
 /* Prose styling for MDX content */

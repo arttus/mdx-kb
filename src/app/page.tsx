@@ -30,7 +30,7 @@ export default function Home() {
             </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link href="https://github.com">View on GitHub</Link>
+            <Link href="https://github.com/arttus/mdx-kb">View on GitHub</Link>
           </Button>
         </div>
       </section>
@@ -42,15 +42,19 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card>
             <CardHeader>
-              <BookOpen className="h-10 w-10 mb-2 text-primary" />
-              <CardTitle>MDX Support</CardTitle>
-              <CardDescription>
-                Write documentation in Markdown with JSX components
-              </CardDescription>
+              <div className="flex items-start gap-4">
+                <BookOpen className="h-10 w-10 text-primary flex-shrink-0" />
+                <div>
+                  <CardTitle>MDX Support</CardTitle>
+                  <CardDescription>
+                    Write documentation in Markdown with JSX components
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Combine the simplicity of Markdown with the power of React components 
+                Combine the simplicity of Markdown with the power of React components
                 for rich, interactive documentation.
               </p>
             </CardContent>
@@ -58,15 +62,19 @@ export default function Home() {
 
           <Card>
             <CardHeader>
-              <Code2 className="h-10 w-10 mb-2 text-primary" />
-              <CardTitle>Syntax Highlighting</CardTitle>
-              <CardDescription>
-                Beautiful code blocks with Shiki
-              </CardDescription>
+              <div className="flex items-start gap-4">
+                <Code2 className="h-10 w-10 text-primary flex-shrink-0" />
+                <div>
+                  <CardTitle>Syntax Highlighting</CardTitle>
+                  <CardDescription>
+                    Beautiful code blocks with Shiki
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Support for 50+ languages with line highlighting, line numbers, 
+                Support for 50+ languages with line highlighting, line numbers,
                 and copy-to-clipboard functionality.
               </p>
             </CardContent>
@@ -74,15 +82,19 @@ export default function Home() {
 
           <Card>
             <CardHeader>
-              <Palette className="h-10 w-10 mb-2 text-primary" />
-              <CardTitle>Dark Mode</CardTitle>
-              <CardDescription>
-                System-aware theme switching
-              </CardDescription>
+              <div className="flex items-start gap-4">
+                <Palette className="h-10 w-10 text-primary flex-shrink-0" />
+                <div>
+                  <CardTitle>Dark Mode</CardTitle>
+                  <CardDescription>
+                    System-aware theme switching
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Automatic dark mode support with smooth transitions and 
+                Automatic dark mode support with smooth transitions and
                 persistent user preferences.
               </p>
             </CardContent>

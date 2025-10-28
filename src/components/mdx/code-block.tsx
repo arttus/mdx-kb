@@ -29,11 +29,7 @@ export function CodeBlock({
       try {
         const highlighted = await codeToHtml(code, {
           lang: language,
-          themes: {
-            light: 'github-light',
-            dark: 'night-owl',
-          },
-          defaultColor: false,
+          theme: 'github-light',
         });
         setHtml(highlighted);
       } catch (error) {
@@ -53,15 +49,9 @@ export function CodeBlock({
   };
 
   return (
-    <div className="relative group my-6 rounded-lg border-2 overflow-hidden" style={{
-      backgroundColor: 'var(--color-code-bg)',
-      borderColor: 'var(--color-code-border)'
-    }}>
+    <div className="relative group my-6 rounded-lg border-2 overflow-hidden border-border">
       {title && (
-        <div className="flex items-center justify-between px-4 py-2 border-b-2" style={{
-          borderColor: 'var(--color-code-border)',
-          backgroundColor: 'var(--color-code-bg)'
-        }}>
+        <div className="flex items-center justify-between px-4 py-2 border-b-2 border-border bg-muted/50">
           <span className="text-sm font-mono text-muted-foreground">{title}</span>
           <span className="text-xs text-muted-foreground uppercase">{language}</span>
         </div>
@@ -77,12 +67,11 @@ export function CodeBlock({
         </Button>
         {html ? (
           <div
-            className="overflow-x-auto [&>pre]:!m-0 [&>pre]:!p-4"
-            style={{ backgroundColor: 'var(--color-code-bg)' }}
+            className="overflow-x-auto [&>pre]:!m-0 [&>pre]:!p-4 [&>pre]:!bg-transparent [&>pre]:!border-0"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         ) : (
-          <pre className="overflow-x-auto p-4" style={{ backgroundColor: 'var(--color-code-bg)' }}>
+          <pre className="overflow-x-auto p-4 bg-muted">
             <code className={className}>{code}</code>
           </pre>
         )}

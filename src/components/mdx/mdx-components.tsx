@@ -7,17 +7,36 @@ import { FileTree } from './file-tree';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
+// Helper function to generate heading IDs
+function generateId(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
 export const mdxComponents: MDXComponents = {
   // Override default HTML elements
   h1: ({ children }) => (
     <h1 className="text-4xl font-bold mb-4 mt-2">{children}</h1>
   ),
-  h2: ({ children }) => (
-    <h2 className="text-3xl font-bold mt-8 mb-4 scroll-mt-20">{children}</h2>
-  ),
-  h3: ({ children }) => (
-    <h3 className="text-2xl font-semibold mt-6 mb-3 scroll-mt-20">{children}</h3>
-  ),
+  h2: ({ children }) => {
+    const id = generateId(children as string);
+    return (
+      <h2 id={id} className="text-3xl font-bold mt-8 mb-4 scroll-mt-20">
+        {children}
+      </h2>
+    );
+  },
+  h3: ({ children }) => {
+    const id = generateId(children as string);
+    return (
+      <h3 id={id} className="text-2xl font-semibold mt-6 mb-3 scroll-mt-20">
+        {children}
+      </h3>
+    );
+  },
   h4: ({ children }) => (
     <h4 className="text-xl font-semibold mt-4 mb-2">{children}</h4>
   ),

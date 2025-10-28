@@ -36,17 +36,17 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button variant="ghost" size="icon" asChild>
-            <a 
-              href="https://github.com" 
-              target="_blank" 
+            <a
+              href="https://github.com/arttus/mdx-kb"
+              target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
             >
               <Github className="h-5 w-5" />
             </a>
           </Button>
-          <ThemeToggle />
         </div>
       </div>
     </header>
