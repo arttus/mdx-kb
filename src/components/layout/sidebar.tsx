@@ -18,31 +18,53 @@ export function Sidebar({ navigation }: SidebarProps) {
     <aside className="fixed top-16 z-30 hidden h-[calc(100vh-4rem)] w-64 shrink-0 border-r bg-background md:sticky md:block">
       <ScrollArea className="h-full py-6 px-4">
         <nav className="space-y-6">
-          {navigation.map((section) => (
-            <div key={section.title}>
-              <h4 className="mb-2 px-2 text-sm font-semibold">{section.title}</h4>
-              {section.items && (
-                <ul className="space-y-1">
-                  {section.items.map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href || '#'}
-                        className={cn(
-                          'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted',
-                          pathname === item.href
-                            ? 'bg-muted font-medium text-foreground'
-                            : 'text-muted-foreground'
-                        )}
-                      >
-                        <FileText className="h-4 w-4" />
-                        {item.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
+          {navigation.map((item, index) => {
+            // If item has href, it's a direct link (root-level document)
+            if (item.href) {
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted',
+                    pathname === item.href
+                      ? 'bg-muted font-medium text-foreground'
+                      : 'text-muted-foreground'
+                  )}
+                >
+                  <FileText className="h-4 w-4" />
+                  {item.title}
+                </Link>
+              );
+            }
+
+            // Otherwise, it's a section with sub-items
+            return (
+              <div key={item.title || index}>
+                <h4 className="mb-2 px-2 text-sm font-semibold">{item.title}</h4>
+                {item.items && (
+                  <ul className="space-y-1">
+                    {item.items.map((subItem) => (
+                      <li key={subItem.href}>
+                        <Link
+                          href={subItem.href || '#'}
+                          className={cn(
+                            'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted',
+                            pathname === subItem.href
+                              ? 'bg-muted font-medium text-foreground'
+                              : 'text-muted-foreground'
+                          )}
+                        >
+                          <FileText className="h-4 w-4" />
+                          {subItem.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
         </nav>
       </ScrollArea>
     </aside>
