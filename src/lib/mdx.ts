@@ -20,10 +20,14 @@ export interface DocMeta {
 
 export function getDocBySlug(slug: string[]): DocMeta | null {
   try {
-    const filePath = path.join(contentDirectory, ...slug) + '.mdx';
-    
+    // Try .mdx first, then .md
+    let filePath = path.join(contentDirectory, ...slug) + '.mdx';
+
     if (!fs.existsSync(filePath)) {
-      return null;
+      filePath = path.join(contentDirectory, ...slug) + '.md';
+      if (!fs.existsSync(filePath)) {
+        return null;
+      }
     }
 
     const fileContents = fs.readFileSync(filePath, 'utf8');
@@ -52,8 +56,8 @@ export function getAllDocs(): DocMeta[] {
 
       if (stat.isDirectory()) {
         readDirectory(filePath, [...slugPrefix, file]);
-      } else if (file.endsWith('.mdx')) {
-        const slug = [...slugPrefix, file.replace('.mdx', '')];
+      } else if (file.endsWith('.mdx') || file.endsWith('.md')) {
+        const slug = [...slugPrefix, file.replace(/\.mdx?$/, '')];
         const doc = getDocBySlug(slug);
         if (doc) {
           docs.push(doc);
@@ -132,13 +136,13 @@ export function generateNavigation(): NavItem[] {
       const filePath = path.join(dir, file);
       const stat = fs.statSync(filePath);
       const isDirectory = stat.isDirectory();
-      const name = file.replace('.mdx', '');
+      const name = file.replace(/\.mdx?$/, '');
 
       let title = titleCase(name);
       let order = 999;
 
-      // If it's an MDX file, read its frontmatter for title and order
-      if (!isDirectory && file.endsWith('.mdx')) {
+      // If it's an MDX or MD file, read its frontmatter for title and order
+      if (!isDirectory && (file.endsWith('.mdx') || file.endsWith('.md'))) {
         try {
           const fileContents = fs.readFileSync(filePath, 'utf8');
           const { data } = matter(fileContents);

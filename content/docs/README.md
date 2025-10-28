@@ -9,7 +9,7 @@ The sidebar navigation is **automatically generated** from the folder structure.
 ## How It Works
 
 1. **Folders become sections** - Any folder in `content/docs/` becomes a navigation section
-2. **MDX files become menu items** - Each `.mdx` file becomes a clickable link
+2. **Markdown files become menu items** - Each `.md` or `.mdx` file becomes a clickable link
 3. **Titles come from frontmatter** - The `title` field in frontmatter is used for the menu label
 4. **Automatic ordering** - Files are sorted alphabetically by default
 
@@ -59,10 +59,12 @@ This creates a sidebar with:
 
 To add a new page:
 
-1. Create a new `.mdx` file in the appropriate folder
+1. Create a new `.md` or `.mdx` file in the appropriate folder
 2. Add frontmatter with at least a `title` field
 3. Optionally add an `order` field to control position
 4. The page will automatically appear in the sidebar!
+
+**Note:** Both `.md` (Markdown) and `.mdx` (MDX with JSX components) files are supported!
 
 ## Nested Folders
 
