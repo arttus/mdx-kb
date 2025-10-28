@@ -20,11 +20,14 @@ export interface DocMeta {
 
 export function getDocBySlug(slug: string[]): DocMeta | null {
   try {
+    // Convert hyphenated slug back to spaces for filename lookup
+    const slugWithSpaces = slug.map(s => s.replace(/-/g, ' '));
+
     // Try .mdx first, then .md
-    let filePath = path.join(contentDirectory, ...slug) + '.mdx';
+    let filePath = path.join(contentDirectory, ...slugWithSpaces) + '.mdx';
 
     if (!fs.existsSync(filePath)) {
-      filePath = path.join(contentDirectory, ...slug) + '.md';
+      filePath = path.join(contentDirectory, ...slugWithSpaces) + '.md';
       if (!fs.existsSync(filePath)) {
         return null;
       }
@@ -55,9 +58,14 @@ export function getAllDocs(): DocMeta[] {
       const stat = fs.statSync(filePath);
 
       if (stat.isDirectory()) {
-        readDirectory(filePath, [...slugPrefix, file]);
+        // Convert folder names with spaces to hyphens for URLs
+        const folderSlug = file.replace(/\s+/g, '-');
+        readDirectory(filePath, [...slugPrefix, folderSlug]);
       } else if (file.endsWith('.mdx') || file.endsWith('.md')) {
-        const slug = [...slugPrefix, file.replace(/\.mdx?$/, '')];
+        // Convert filename with spaces to hyphens for URLs
+        const fileName = file.replace(/\.mdx?$/, '');
+        const fileSlug = fileName.replace(/\s+/g, '-');
+        const slug = [...slugPrefix, fileSlug];
         const doc = getDocBySlug(slug);
         if (doc) {
           docs.push(doc);
@@ -189,7 +197,9 @@ export function generateNavigation(): NavItem[] {
 
     for (const node of nodes) {
       if (node.isDirectory) {
-        const subItems = buildTree(node.path, [...slugPrefix, node.name]);
+        // Convert folder name with spaces to hyphens for URL slug
+        const folderSlug = node.name.replace(/\s+/g, '-');
+        const subItems = buildTree(node.path, [...slugPrefix, folderSlug]);
         if (subItems.length > 0) {
           items.push({
             title: node.title,
@@ -198,8 +208,9 @@ export function generateNavigation(): NavItem[] {
           });
         }
       } else {
-        // It's an MDX file (already stripped .mdx extension in the name)
-        const href = `/docs/${[...slugPrefix, node.name].join('/')}`;
+        // It's an MDX/MD file - convert spaces to hyphens for URL
+        const fileSlug = node.name.replace(/\s+/g, '-');
+        const href = `/docs/${[...slugPrefix, fileSlug].join('/')}`;
         items.push({
           title: node.title,
           href,
