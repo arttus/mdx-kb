@@ -2,6 +2,16 @@
 
 > **Beautiful documentation that developers actually want to write.**
 
+<div align="center">
+
+### [🚀 **View Live Demo**](https://mdx-kb.vercel.app/)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/arttus/mdx-kb)
+
+</div>
+
+---
+
 Stop fighting with complex documentation platforms. Start writing docs in Markdown with the power of React components. Your team will thank you.
 
 ## ✨ Why This Exists
@@ -48,9 +58,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) and see your docs come alive.
 
-### Or Use as a Template
+### Or Deploy Your Own
 
-Click the **"Use this template"** button on GitHub to create your own repository based on this project.
+1. **[View the live demo](https://mdx-kb.vercel.app/)** to see it in action
+2. Click **"Use this template"** button on GitHub to create your own repository
+3. Deploy to Vercel with one click using the button above
 
 ## 📝 Writing Docs
 
