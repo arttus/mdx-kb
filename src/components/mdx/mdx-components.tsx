@@ -43,14 +43,31 @@ export const mdxComponents: MDXComponents = {
   p: ({ children }) => (
     <p className="mb-4 leading-7">{children}</p>
   ),
-  a: ({ href, children }) => (
-    <Link 
-      href={href || '#'} 
-      className="text-primary underline underline-offset-2 hover:no-underline"
-    >
-      {children}
-    </Link>
-  ),
+  a: ({ href, children }) => {
+    // Handle external links
+    if (href?.startsWith('http://') || href?.startsWith('https://')) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline underline-offset-2 hover:no-underline"
+        >
+          {children}
+        </a>
+      );
+    }
+
+    // Handle internal links
+    return (
+      <Link
+        href={href || '#'}
+        className="text-primary underline underline-offset-2 hover:no-underline"
+      >
+        {children}
+      </Link>
+    );
+  },
   ul: ({ children }) => (
     <ul className="mb-4 ml-6 list-disc [&>li]:mt-2">{children}</ul>
   ),

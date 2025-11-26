@@ -4,6 +4,14 @@ import matter from 'gray-matter';
 
 const contentDirectory = path.join(process.cwd(), 'content/docs');
 
+/**
+ * Convert a filename to a URL-safe slug
+ * Replaces spaces with hyphens
+ */
+function filenameToSlug(filename: string): string {
+  return filename.replace(/\s+/g, '-');
+}
+
 export interface DocFrontmatter {
   title: string;
   description?: string;
@@ -20,19 +28,55 @@ export interface DocMeta {
 
 export function getDocBySlug(slug: string[]): DocMeta | null {
   try {
-    // Convert hyphenated slug back to spaces for filename lookup
-    const slugWithSpaces = slug.map(s => s.replace(/-/g, ' '));
+    // Try to find the file by checking the actual filesystem
+    // This handles both spaces and hyphens in filenames
+    const lastSegment = decodeURIComponent(slug[slug.length - 1]);
 
-    // Try .mdx first, then .md
-    let filePath = path.join(contentDirectory, ...slugWithSpaces) + '.mdx';
+    // Try to find the directory - check both hyphenated and space versions
+    let dirPath: string;
+    if (slug.length > 1) {
+      const pathSegments = slug.slice(0, -1).map(s => decodeURIComponent(s));
 
-    if (!fs.existsSync(filePath)) {
-      filePath = path.join(contentDirectory, ...slugWithSpaces) + '.md';
-      if (!fs.existsSync(filePath)) {
-        return null;
+      // First try with hyphens (as-is)
+      dirPath = path.join(contentDirectory, ...pathSegments);
+
+      // If not found, try replacing hyphens with spaces
+      if (!fs.existsSync(dirPath)) {
+        dirPath = path.join(contentDirectory, ...pathSegments.map(s => s.replace(/-/g, ' ')));
+      }
+    } else {
+      dirPath = contentDirectory;
+    }
+
+    if (!fs.existsSync(dirPath)) {
+      return null;
+    }
+
+    // Read directory and find matching file
+    const files = fs.readdirSync(dirPath);
+    let matchedFile: string | null = null;
+
+    // Generate the slug from the last segment to match against actual filenames
+    const targetSlug = lastSegment.toLowerCase();
+
+    for (const file of files) {
+      if (file.endsWith('.mdx') || file.endsWith('.md')) {
+        const fileName = file.replace(/\.mdx?$/, '');
+        // Convert filename to slug format using the same logic as getAllDocs
+        const fileSlug = filenameToSlug(fileName).toLowerCase();
+
+        if (fileSlug === targetSlug) {
+          matchedFile = file;
+          break;
+        }
       }
     }
 
+    if (!matchedFile) {
+      return null;
+    }
+
+    const filePath = path.join(dirPath, matchedFile);
     const fileContents = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(fileContents);
 
@@ -58,13 +102,13 @@ export function getAllDocs(): DocMeta[] {
       const stat = fs.statSync(filePath);
 
       if (stat.isDirectory()) {
-        // Convert folder names with spaces to hyphens for URLs
-        const folderSlug = file.replace(/\s+/g, '-');
+        // Convert folder names to URL-safe slugs
+        const folderSlug = filenameToSlug(file);
         readDirectory(filePath, [...slugPrefix, folderSlug]);
       } else if (file.endsWith('.mdx') || file.endsWith('.md')) {
-        // Convert filename with spaces to hyphens for URLs
+        // Convert filename to URL-safe slug
         const fileName = file.replace(/\.mdx?$/, '');
-        const fileSlug = fileName.replace(/\s+/g, '-');
+        const fileSlug = filenameToSlug(fileName);
         const slug = [...slugPrefix, fileSlug];
         const doc = getDocBySlug(slug);
         if (doc) {
@@ -197,8 +241,8 @@ export function generateNavigation(): NavItem[] {
 
     for (const node of nodes) {
       if (node.isDirectory) {
-        // Convert folder name with spaces to hyphens for URL slug
-        const folderSlug = node.name.replace(/\s+/g, '-');
+        // Convert folder name to URL-safe slug
+        const folderSlug = filenameToSlug(node.name);
         const subItems = buildTree(node.path, [...slugPrefix, folderSlug]);
         if (subItems.length > 0) {
           items.push({
@@ -208,8 +252,8 @@ export function generateNavigation(): NavItem[] {
           });
         }
       } else {
-        // It's an MDX/MD file - convert spaces to hyphens for URL
-        const fileSlug = node.name.replace(/\s+/g, '-');
+        // It's an MDX/MD file - convert to URL-safe slug
+        const fileSlug = filenameToSlug(node.name);
         const href = `/docs/${[...slugPrefix, fileSlug].join('/')}`;
         items.push({
           title: node.title,

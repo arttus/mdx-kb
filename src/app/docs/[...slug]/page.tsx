@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { mdxComponents } from '@/components/mdx/mdx-components';
 import remarkGfm from 'remark-gfm';
+import { Suspense } from 'react';
 
 interface DocPageProps {
   params: Promise<{
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: DocPageProps) {
   };
 }
 
-export default async function DocPage({ params }: DocPageProps) {
+export default async function Page({ params }: DocPageProps) {
   const { slug } = await params;
   const doc = getDocBySlug(slug);
 
@@ -58,16 +59,18 @@ export default async function DocPage({ params }: DocPageProps) {
           )}
           <Separator className="mt-4" />
         </div>
-        <MDXRemote
-          source={doc.content}
-          components={mdxComponents}
-          options={{
-            mdxOptions: {
-              remarkPlugins: [remarkGfm],
-              rehypePlugins: [],
-            },
-          }}
-        />
+        <Suspense fallback={<div>Loading content...</div>}>
+          <MDXRemote
+            source={doc.content}
+            components={mdxComponents}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: [],
+              },
+            }}
+          />
+        </Suspense>
       </article>
       <TableOfContents items={toc} />
     </div>
