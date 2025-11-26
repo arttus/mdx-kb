@@ -161,8 +161,8 @@ interface FileNode {
   name: string;
   path: string;
   isDirectory: boolean;
-  title?: string;
-  order?: number;
+  title: string;
+  order: number;
 }
 
 function titleCase(str: string): string {
