@@ -231,8 +231,10 @@ export function generateNavigation(): NavItem[] {
 
     // Sort by order, then by name
     nodes.sort((a, b) => {
-      if (a.order !== b.order) {
-        return a.order - b.order;
+      const orderA = a.order ?? 999;
+      const orderB = b.order ?? 999;
+      if (orderA !== orderB) {
+        return orderA - orderB;
       }
       return a.name.localeCompare(b.name);
     });
